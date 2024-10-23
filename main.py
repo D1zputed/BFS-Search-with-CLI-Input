@@ -34,11 +34,16 @@ def bfs_path(graph, start, goal):
     # If we exhaust the queue and never reach the goal, return None
     return None
 
+
 def getNumNodes() -> int:
+    #This function simply takes the number of nodes from user
+    #The nodes are only from the alphabet for simplicity
+
+
     nodeNumber = 0
     while(True):
         try:
-            nodeNumber = int(input("How many nodes do you want?(Maximum 26)"))
+            nodeNumber = int(input("How many nodes do you want?(Maximum 26) "))
             if nodeNumber <= 0 or nodeNumber > 26:
                 print("Number not within range")
             else:
@@ -47,34 +52,51 @@ def getNumNodes() -> int:
             print("Must be a number")
 
 def setNodes(amount: int) -> list[str]:
+    #This function generates the node names
+
+
     alpabeth = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     cutAlpabeth = alpabeth[0:amount]
     return list(cutAlpabeth)
 
+def showGraph(graph: dict) -> None:
+    for node in graph:
+        print(f"{node}: {graph[node]}")
+
+
+
 def setLinks(nodes: list[str]) -> dict:
+    #This is where the user sets the adjacency list
+
+
     print("-------------------")
     print("Set the adjacency list")
     print("-------------------")
-    usedLetters = ["A"]
     graph = {}
     for letter in nodes:
         while(True):
-            neighbors = input(f"Enter neighbors for node {letter}(separate by comma only):").upper()
+            print("-----------------------------")
+            print(f"The remaining nodes are: {nodes}")
+            print(f"The current graph is:")
+            showGraph(graph)
+            neighbors = input(f"Enter neighbors for node {letter}(separate by comma only or leave empty if node terminates): ").upper()
+            
             if neighbors:
                 neighbors = neighbors.split(",")
-                test = set(neighbors).issubset(nodes) and not bool(set(neighbors) & set(usedLetters))
+                if_in_allNodes = set(neighbors).issubset(nodes) and letter not in neighbors
             else:
                 neighbors = []
-            if test:
-                usedLetters.extend(neighbors)
+            if if_in_allNodes and neighbors:
                 graph[letter] = neighbors
                 break
             else:
-                print("Wrong input")
+                print("Wrong input or input same as current node")
 
     return graph
 
 def askStartEnd(nodes: list[str]) -> tuple:
+    #This is where the user sets what node to start and to end
+
     while(True):
         print("------------------------")
         start = str(input("What node should it start?"))
